@@ -1,0 +1,28 @@
+INSTALLATION
+------------
+
+Step 1) Extract the compressed mobywat source package
+
+$ tar -xvf mobywat.tgz
+
+Step 2) Enter mobywat/src
+
+$ cd mobywat/src
+
+Step 3) Type "make" at the command prompt
+
+$ make
+
+Step 4) Now, your executable named "mobywat" is ready for use in mobywat/src
+
+-----------------
+You may also type
+
+$ make install
+to copy mobywat executable to $HOME/bin
+
+and/or
+
+$ make clean
+to remove object and binary files from mobywat/src
+-----------------

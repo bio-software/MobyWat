@@ -1,0 +1,7 @@
+# Windows download metadata (alternate data streams copied into WSL)
+*:Zone.Identifier
+*Zone.Identifier
+
+# Build output
+*.o
+src/mobywat
