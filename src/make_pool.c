@@ -57,7 +57,7 @@ int *make_pool (char *file_in, tp *topology, int topol_anum, char t_range [MAX_F
 		printf("%s","\nERROR! Atom counts in topology and xtc files are not equal!\n");
 		printf("%s%d\n","Atom count in topology file = ",topol_anum);
 		printf("%s%d\n","Atom count in xtc file      = ",natoms);
-		exit(0);
+		exit (1);
 		}
 
 	// Read xtc, xtc->ap, RMSD, pool->binary
@@ -200,7 +200,7 @@ int *make_pool (char *file_in, tp *topology, int topol_anum, char t_range [MAX_F
 			printf("%s","\nERROR! Number of frames in xtc file is less than required by maximal frame number or frame range \"-n\"!\n");
 			printf("%s%d\n","Final frame number read from xtc    = ",k-1);
 			printf("%s%d\n","Maximal frame number (frame range)  = ",g_frame_range_max);
-			exit (0);
+			exit (1);
 			}
 		k++;
 	} while (result == exdrOK);

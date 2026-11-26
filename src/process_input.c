@@ -21,6 +21,7 @@ extern char g_v;
 void print_log_file ( char file_name [MAX_FILENAME_LENGTH], char text [MAX_OUT_TEXT_LENGTH], char flag );
 int wat_res_comp(char sample[]);
 int wat_res_comp_excl(char sample[], char ref[]);
+int is_rms_atom (char *pdb_type, char *res_type);
 
 ap *box_to_pdb (ap *box_pdb, char limits [MAX_FILENAME_LENGTH], int *atom_num_pdb, int atom_num_box, char label) {
 
@@ -122,7 +123,7 @@ ap *box_to_pdb (ap *box_pdb, char limits [MAX_FILENAME_LENGTH], int *atom_num_pd
 
 	if ( counter == 0 ) {
 		printf ("%s%c%s%s%s","ERROR! Range \"-",label," ",limits,"\" defines zero atoms.\n");
-		exit (0);
+		exit (1);
 		}
 
 	if ( def_mode == 'd' ) {
@@ -173,7 +174,7 @@ ap *split_ref_file (ap *box_pdb, char **limits, int no_limits, int *atom_num_tot
 
 	if (label == 't') {
 		for (i = 0; i < *atom_num_total; i++)		// count Calphas 
-			if ((full_output+i)->pdb_type[0]  == 'C' && (full_output+i)->pdb_type[1]  == 'A') ca_counter_ref++;
+			if (is_rms_atom((full_output+i)->pdb_type, (full_output+i)->res_type)) ca_counter_ref++;
 		g_ref_target_ca_no = ca_counter_ref;
 		}
 

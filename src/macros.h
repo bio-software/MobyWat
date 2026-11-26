@@ -118,7 +118,7 @@ ________________________________________________________________________________
 __________________________________________________________________________________\n\
                                                                 ===by=C=Hetenyi===\n"
 #define WARN_BOXATN printf("%s","WARNING Number of atoms in box is not equal to number of atoms assigned to ligand+target+waters.\n");
-#define MEMERR { printf("ERROR: No Memory Available.\n"); exit(0); }
+#define MEMERR { printf("ERROR: No Memory Available.\n"); exit(1); }
 #define PROGTER { printf("%s%s",PROGRAM," terminates.\n"); exit(0); }
 #define TRAJ_NOIFACE_FILE_HEADER "Number of selected interface waters in each frame\n"
 #define TRAJ_NOSFACE_FILE_HEADER "Number of selected surface waters in each frame\n"

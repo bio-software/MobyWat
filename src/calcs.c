@@ -137,6 +137,21 @@ int min_dbl_reno(double *a, int n) {
 	return min_no;
 	}
 
+// 1 for a target RMSD atom: named CA, or $MOBYWAT_RMS_ATOM (e.g. C4' for nucleic acids), but not an ion residue of the same name (calcium CA)
+int is_rms_atom (char *pdb_type, char *res_type) {
+
+	static char *name = NULL;
+	char res [RES_TYPE_LENGTH+1] = "";
+
+	if ( name == NULL ) {
+		name = getenv("MOBYWAT_RMS_ATOM");
+		if ( name == NULL || name[0] == '\0' ) name = "CA";
+		}
+	if ( strcmp(pdb_type, name) != 0 ) return 0;
+	sscanf(res_type, "%3s", res);
+	return ( strcmp(res, pdb_type) != 0 );
+	}
+
 double rmsd_calc (ap *reference, ap *actual, int atom_number, char a_type_sw) {
 
  	int i, j, num_ignore;
@@ -154,26 +169,26 @@ double rmsd_calc (ap *reference, ap *actual, int atom_number, char a_type_sw) {
 	switch (a_type_sw) {
 	
 		case 'a':	for (i = 0; i < ref_atom_number; i++)		// Calphas - does not require equal number of atoms only eq. no. of CA-s
-					if ((reference+i)->pdb_type[0]  == 'C' && (reference+i)->pdb_type[1]  == 'A') ca_counter_ref++;
+					if (is_rms_atom((reference+i)->pdb_type, (reference+i)->res_type)) ca_counter_ref++;
 				for (i = 0; i < atom_number; i++)		
-					if ((actual+i)->pdb_type[0]  == 'C' && (actual+i)->pdb_type[1]  == 'A') ca_counter_act++;
+					if (is_rms_atom((actual+i)->pdb_type, (actual+i)->res_type)) ca_counter_act++;
 				g_input_back->target_traj_ca_no = ca_counter_act;
 				if ( ca_counter_ref != ca_counter_act ) {
 					printf("%s","ERROR! Numbers of CA atoms are not equal in the two compared target molecules! RMSD calculation is impossible!\n");
 					printf("%s%6d%s","Number of CA atoms in target 1 (ref.):",ca_counter_ref,"\n");
 					printf("%s%6d%s","Number of CA atoms in target 2 (act.):",ca_counter_act,"\n");
-					exit(0);
+					exit (1);
 					}
 				ca_serial = (int *) malloc(ca_counter_ref * sizeof(int));	
 				j = 0;
 				for (i = 0; i < ref_atom_number; i++)
-					if ((reference+i)->pdb_type[0]  == 'C' && (reference+i)->pdb_type[1]  == 'A') {
+					if (is_rms_atom((reference+i)->pdb_type, (reference+i)->res_type)) {
 						*(ca_serial+j) = i;
 						j++;
 						}
 				j = 0;
 				for (i = 0; i < atom_number; i++) {		
-					if ((actual+i)->pdb_type[0]  == 'C' && (actual+i)->pdb_type[1]  == 'A') {
+					if (is_rms_atom((actual+i)->pdb_type, (actual+i)->res_type)) {
 						summa = summa + ((reference+*(ca_serial+j))->x_coord - (actual+i)->x_coord)*((reference+*(ca_serial+j))->x_coord - (actual+i)->x_coord) + ((reference+*(ca_serial+j))->y_coord - (actual+i)->y_coord)*((reference+*(ca_serial+j))->y_coord - (actual+i)->y_coord) + ((reference+*(ca_serial+j))->z_coord - (actual+i)->z_coord)*((reference+*(ca_serial+j))->z_coord - (actual+i)->z_coord);
 						j++;
 						}

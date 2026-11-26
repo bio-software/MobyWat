@@ -42,7 +42,7 @@ int main (int argc, char *argv[]) {
 		if ( find_token_in_name ( g_temp, "pdb", g_delims3) == 'y' ) g_xtc_ind = 'p'; 
 		if ( g_xtc_ind != 'w' &&  g_xtc_ind != 'x' && g_xtc_ind != 'p' ) {
 			printf("%s","ERROR! The trajectory file must be one of the following three types: *.xtc, *.pdb, or *.plw!\n");
-			exit(0);
+			exit (1);
 			}
 		FILENAME2GTEMP(g_f_name)
 		if ( g_xtc_ind == 'x' ) strcpy(g_root_name, strtok(g_temp, g_delims3));
@@ -54,7 +54,7 @@ int main (int argc, char *argv[]) {
 			if ( find_token_in_name ( g_temp, "pdb", g_delims3) == 'y' ) g_xtc_ind = 'p'; 
 			if ( g_xtc_ind != 'p' ) {
 				printf("%s","ERROR! The edited file must be the type of *.pdb!\n");
-				exit(0);
+				exit (1);
 				}
 			FILENAME2GTEMP(g_f_name)
 			strcpy(g_root_name, strtok(g_temp, g_delims3));
@@ -127,11 +127,11 @@ int main (int argc, char *argv[]) {
 			else { printf("%s\n", "ERROR! Target or water range was not specified!"); TERMINATE }
 	if (g_frame_range_max < g_frame_range_min) {
 		printf("%s","ERROR! First frame has larger serial number than last frame!\n");
-		exit(0);
+		exit (1);
 		}
 	if ( g_frame_range_min < 0 || g_frame_range_max < 0 ) {
 		printf("%s","ERROR! Frame number cannot be negative!\n");
-		exit (0);
+		exit (1);
 		}
 
 	// Reading in topology 1
@@ -141,7 +141,7 @@ int main (int argc, char *argv[]) {
 		g_topology = read_in_top (g_top_file_name, &g_pdb_no);
 		if ( g_topology == NULL ) {
 			printf("%s%s%s","ERROR! There is no topology file ",g_top_file_name,"\n");
-			exit(0);
+			exit (1);
 			}
 		}
 
@@ -255,11 +255,11 @@ int main (int argc, char *argv[]) {
 		if ( g_mdl_count == 0 ) {
 			if ( g_mdl_ind == 'm' ) printf("%s%s%s","ERROR! There are no frames in multiple frames file ",g_f_name,"\n");
 			else printf("%s%s%s","ERROR! There are no separate frame files with root name ",g_root_name,"\n");
-			exit(0);
+			exit (1);
 			}
 		if ( g_mdl_count < (g_frame_range_max-g_frame_range_min+1) ) {
 			printf("%s","ERROR! Number of available frames is smaller than that is required by frame range \"-n\")!\n");
-			exit(0);
+			exit (1);
 			}
 		str0 (g_f_name, MAX_FILENAME_LENGTH);
 		sprintf(g_f_name,"%s%s%s","O_",g_root_name,".xtc\0");
@@ -276,7 +276,7 @@ int main (int argc, char *argv[]) {
 		g_topology = read_in_top (g_top_file_name, &g_pdb_no);
 		if ( g_topology == NULL ) {
 			printf("%s%s%s","ERROR! There is no topology file ",g_top_file_name,"\n");
-			exit(0);
+			exit (1);
 			}
 		}
 
